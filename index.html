@@ -43,8 +43,8 @@ var svg = d3.select("body")
 	.attr("width", width)
 	.attr("height", height);
 
-// d3.json("prov.json", function(error, BC) {
-// 	if (error) return console.log(error);
+d3.json("prov.json", function(error, BC) {
+	if (error) return console.log(error);
 
 // 	svg.append("path")
 // 		.attr("id", "land")
@@ -59,10 +59,10 @@ var svg = d3.select("body")
 
 // });
 
-d3.json("prov.json", function(error, BC) {
-  var defs = svg.append("defs");
+// d3.json("prov.json", function(error, BC) {
+//   var defs = svg.append("defs");
 
-  defs.append("path")
+  svg.append("path")
       .datum(topojson.feature(BC, BC.objects.prov))
       .attr("id", "land")
       .attr("d", path);
@@ -81,15 +81,15 @@ d3.json("prov.json", function(error, BC) {
   svg.append("use")
       .attr("xlink:href", "#land");
 });
-// d3.json("newUs.json", function(error, us) {
-//   var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
+d3.json("newUs.json", function(error, us) {
+  var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
 
-//   svg.append("path")
-//       .datum(topojson.feature(us, alaskaState))
-//       .attr("id", "land")
-//       .attr("d", path);
+  svg.append("path")
+      .datum(topojson.feature(us, alaskaState))
+      .attr("id", "land")
+      .attr("d", path);
 
-// });
+});
 
 
 </script>

@@ -35,12 +35,13 @@ prov.json: build/gpr_000b11a_e.shp
 newUs.json: build/us.json
 	node_modules/.bin/topojson \
 		-o $@ \
-		--projection='width = 960, height = 800, d3.geo.albers() \
-			.rotate([98, 0]) \
-		    .center([-22, 55]) \
-		    .parallels([20, 65.5]) \
-		    .scale(2500) \
+		--projection='width = 960, height = 600, d3.geo.albers() \
+			.rotate([96, 0]) \
+		    .center([-32, 53.9]) \
+		    .parallels([20, 60]) \
+		    .scale(1970) \
 		    .translate([width / 2, height / 2])' \
+		--simplify=0.5 \
 	    -- newUs=$<
 
 

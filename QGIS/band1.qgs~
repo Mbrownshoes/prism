@@ -20,10 +20,10 @@
     <mapcanvas>
         <units>degrees</units>
         <extent>
-            <xmin>-141.42430593297137875</xmin>
-            <ymin>41.45864017210107022</ymin>
-            <xmax>-113.06555593297063922</xmax>
-            <ymax>62.93320086050743356</ymax>
+            <xmin>-96.00175020526971537</xmin>
+            <ymin>40.00040389912363992</ymin>
+            <xmax>-96.00139738870809936</xmax>
+            <ymax>40.00052852003729242</ymax>
         </extent>
         <projections>1</projections>
         <destinationsrs>
@@ -166,7 +166,7 @@
             </pipe>
             <blendMode>0</blendMode>
         </maplayer>
-        <maplayer minimumScale="0" maximumScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0">
+        <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0">
             <id>stuff20141219145129274</id>
             <datasource>../stuff.tif</datasource>
             <title></title>
@@ -177,14 +177,14 @@
             <layername>stuff</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs</proj4>
+                    <srsid>27131</srsid>
+                    <srid>102008</srid>
+                    <authid>EPSG:102008</authid>
+                    <description>North_America_Albers_Equal_Area_Conic</description>
+                    <projectionacronym>aea</projectionacronym>
+                    <ellipsoidacronym></ellipsoidacronym>
+                    <geographicflag>false</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties>
@@ -195,7 +195,7 @@
                 <noDataList bandNo="1" useSrcNoData="1"/>
             </noData>
             <pipe>
-                <rasterrenderer opacity="1" alphaBand="-1" classificationMax="5.63579" classificationMinMaxOrigin="CumulativeCutFullExtentEstimated" band="1" classificationMin="-15.8202" type="singlebandpseudocolor">
+                <rasterrenderer opacity="1" alphaBand="0" classificationMax="5.63579" classificationMinMaxOrigin="CumulativeCutFullExtentEstimated" band="1" classificationMin="-15.8202" type="singlebandpseudocolor">
                     <rasterTransparency/>
                     <rastershader>
                         <colorrampshader colorRampType="INTERPOLATED" clip="0">
