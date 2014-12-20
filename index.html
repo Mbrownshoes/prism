@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <met charset="utf-8">
 <style>
-#land {
+/*#land {
 	fill: #ddd;
 	stroke: #fff;
+}*/
+#land {
+  fill: none;
+  stroke: #000;
+  stroke-linejoin: round;
 }
-
 
 </style>
 
@@ -14,19 +18,21 @@
 <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
+
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script>
-var width = 600,
-	height = 800
+var width = 960,
+	height = 600
 
 
 // var projection = d3.geo.albers()
 // 	.rotate([96, 0]) 
-// 	.center([-22, 55]) 
-// 	.parallels([20, 65.5]) 
-// 	.scale(2500) 
+// 	.center([-32, 53.9]) 
+// 	.parallels([20, 60]) //dont change
+// 	.scale(1970) 
 // 	.translate([width / 2, height / 2]);
 
 var path = d3.geo.path()
@@ -37,23 +43,53 @@ var svg = d3.select("body")
 	.attr("width", width)
 	.attr("height", height);
 
+// d3.json("prov.json", function(error, BC) {
+// 	if (error) return console.log(error);
+
+// 	svg.append("path")
+// 		.attr("id", "land")
+// 		.datum(topojson.feature(BC, BC.objects.prov))
+// 		.attr("d", path)
+
+// 	svg.append("image")
+// 		.attr("xlink:href", "band1.jpg")
+// 		.attr("height", height)
+// 		.attr("class", "bg")
+
+
+// });
+
 d3.json("prov.json", function(error, BC) {
-	if (error) return console.log(error);
+  var defs = svg.append("defs");
 
-	svg.append("path")
-		.attr("id", "land")
-		.datum(topojson.feature(BC, BC.objects.prov))
-		.attr("d", path)
-});
-d3.json("newUs.json", function(error, us) {
-  var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
-
-  svg.append("path")
-      .datum(topojson.feature(us, alaskaState))
+  defs.append("path")
+      .datum(topojson.feature(BC, BC.objects.prov))
       .attr("id", "land")
       .attr("d", path);
 
+  svg.append("clipPath")
+      .attr("id", "clip")
+    .append("use")
+      .attr("xlink:href", "#land");
+
+  svg.append("image")
+      .attr("clip-path", "url(#clip)")
+      .attr("xlink:href", "band1.png")
+      .attr("width", width)
+      .attr("height", height);
+
+  svg.append("use")
+      .attr("xlink:href", "#land");
 });
+// d3.json("newUs.json", function(error, us) {
+//   var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
+
+//   svg.append("path")
+//       .datum(topojson.feature(us, alaskaState))
+//       .attr("id", "land")
+//       .attr("d", path);
+
+// });
 
 
 </script>

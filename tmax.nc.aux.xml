@@ -1,0 +1,24 @@
+<PAMDataset>
+  <Subdataset name="climatology_bounds">
+    <PAMDataset>
+      <PAMRasterBand band="1">
+        <Histograms>
+          <HistItem>
+            <HistMin>-10404.32692307692</HistMin>
+            <HistMax>11483.32692307692</HistMax>
+            <BucketCount>26</BucketCount>
+            <IncludeOutOfRange>0</IncludeOutOfRange>
+            <Approximate>0</Approximate>
+            <HistCounts>9|0|0|0|0|0|0|0|0|0|0|0|15|0|0|0|0|0|0|0|0|0|0|0|0|2</HistCounts>
+          </HistItem>
+        </Histograms>
+        <Metadata>
+          <MDI key="STATISTICS_MAXIMUM">11078</MDI>
+          <MDI key="STATISTICS_MEAN">-2610.1901916104</MDI>
+          <MDI key="STATISTICS_MINIMUM">-9999</MDI>
+          <MDI key="STATISTICS_STDDEV">6097.8461810916</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+</PAMDataset>
