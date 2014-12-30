@@ -1,0 +1,282 @@
+<PAMDataset>
+  <Metadata>
+    <MDI key="bnds#_Netcdf4Dimid">3</MDI>
+    <MDI key="bnds#CLASS">DIMENSION_SCALE</MDI>
+    <MDI key="bnds#NAME">This is a netCDF dimension but not a netCDF variable.         2</MDI>
+    <MDI key="crs#_Netcdf4Dimid">0</MDI>
+    <MDI key="crs#GeoTransform">-140.004166666667 0.008333333333333541 0 61.9958333333333 0 -0.008333333333333333 </MDI>
+    <MDI key="crs#grid_mapping_name">latitude_longitude</MDI>
+    <MDI key="crs#inverse_flattening">298.2572221010002</MDI>
+    <MDI key="crs#longitude_of_prime_meridian">0</MDI>
+    <MDI key="crs#semi_major_axis">6378137</MDI>
+    <MDI key="crs#spatial_ref">GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.2572221010002,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4269"]]</MDI>
+    <MDI key="lat#_Netcdf4Dimid">1</MDI>
+    <MDI key="lat#CLASS">DIMENSION_SCALE</MDI>
+    <MDI key="lat#long_name">latitude</MDI>
+    <MDI key="lat#NAME">lat</MDI>
+    <MDI key="lat#standard_name">latitude</MDI>
+    <MDI key="lat#units">degrees_north</MDI>
+    <MDI key="lon#_Netcdf4Dimid">2</MDI>
+    <MDI key="lon#CLASS">DIMENSION_SCALE</MDI>
+    <MDI key="lon#long_name">longitude</MDI>
+    <MDI key="lon#NAME">lon</MDI>
+    <MDI key="lon#standard_name">longitude</MDI>
+    <MDI key="lon#units">degrees_east</MDI>
+    <MDI key="NC_GLOBAL#Conventions">CF-1.5</MDI>
+    <MDI key="NC_GLOBAL#GDAL">GDAL 1.10.0, released 2013/04/24</MDI>
+    <MDI key="NC_GLOBAL#GDAL_AREA_OR_POINT">Area</MDI>
+    <MDI key="NC_GLOBAL#history">Tue Jan 21 17:50:03 2014: ncatted -a climatology,time,c,c,climatology_bounds /home/data/climate/PRISM/dataportal/tmax_monClim_PRISM_historical_run1_197101-200012.nc
+Tue Jan 21 17:45:00 2014: ncrename -a cell_method,cell_methods /home/data/climate/PRISM/dataportal/tmax_monClim_PRISM_historical_run1_197101-200012.nc
+Tue Jan 21 10:52:21 2014: ncatted -a units,time,m,c,days since 1970-01-01 /home/data/climate/PRISM/dataportal/bc_tmax_7100.nc
+Thu Oct 24 10:13:48 2013: ncap2 -O -s tmax=tmax/100; bc_tmax_7100.nc bc_tmax_7100.nc
+Wed Oct 23 11:01:24 2013: ncatted -O -a long_name,time,c,c,time -a calendar,time,c,c,gregorian bc_tmax_7100.nc.prep
+Wed Oct 23 11:00:48 2013: ncap2 -O -s defdim("bnds",2) bc_tmax_7100.nc.prep bc_tmax_7100.nc.prep
+Wed Oct 23 11:00:47 2013: ncatted -O -a long_name,tmax,m,c,Temperature Climatology (Max.) -a long_description,tmax,a,c,Climatological mean of monthly mean maximum daily temperature -a standard_name,tmax,a,c,air_temperature -a units,tmax,a,c,celsius -a cell_method,tmax,a,c,time: maximum within days time: mean within months time: mean over years bc_tmax_7100.nc.prep
+Wed Oct 23 11:00:47 2013: ncrename -O -v Band1,tmax bc_tmax_7100.nc.prep
+Wed Oct 23 11:00:47 2013: ncecat -O --netcdf4 -u time bc_tmax_7100.01.tiff.nc bc_tmax_7100.02.tiff.nc bc_tmax_7100.03.tiff.nc bc_tmax_7100.04.tiff.nc bc_tmax_7100.05.tiff.nc bc_tmax_7100.06.tiff.nc bc_tmax_7100.07.tiff.nc bc_tmax_7100.08.tiff.nc bc_tmax_7100.09.tiff.nc bc_tmax_7100.10.tiff.nc bc_tmax_7100.11.tiff.nc bc_tmax_7100.12.tiff.nc bc_tmax_7100.14.tiff.nc bc_tmax_7100.nc.prep
+Wed Oct 23 11:00:18 2013: GDAL CreateCopy( bc_tmax_7100.01.tiff.nc, ... )</MDI>
+    <MDI key="NC_GLOBAL#nco_openmp_thread_number">1</MDI>
+    <MDI key="NETCDF_DIM_EXTRA">{time}</MDI>
+    <MDI key="NETCDF_DIM_time_DEF">{13,5}</MDI>
+    <MDI key="NETCDF_DIM_time_VALUES">{5493,-1.0842084e-19,4.4319315e-39,90,2.5174327e-41,11139,-3.8751475e-34,-9999,0.007859733,-9999,0.007859733,-9999,0}</MDI>
+    <MDI key="time#_Netcdf4Dimid">0</MDI>
+    <MDI key="time#calendar">gregorian</MDI>
+    <MDI key="time#CLASS">DIMENSION_SCALE</MDI>
+    <MDI key="time#climatology">climatology_bounds</MDI>
+    <MDI key="time#long_name">time</MDI>
+    <MDI key="time#NAME">time</MDI>
+    <MDI key="time#units">days since 1970-01-01</MDI>
+    <MDI key="tmax#_FillValue">-9999</MDI>
+    <MDI key="tmax#_Netcdf4Dimid">0</MDI>
+    <MDI key="tmax#cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+    <MDI key="tmax#grid_mapping">crs</MDI>
+    <MDI key="tmax#long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+    <MDI key="tmax#long_name">Temperature Climatology (Max.)</MDI>
+    <MDI key="tmax#standard_name">air_temperature</MDI>
+    <MDI key="tmax#units">celsius</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Histograms>
+      <HistItem>
+        <HistMin>-19.41036227369309</HistMin>
+        <HistMax>8.140261680126191</HistMax>
+        <BucketCount>1000</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>1</Approximate>
+        <HistCounts>4|2|1|1|0|0|0|0|1|0|1|0|3|1|1|1|0|0|1|0|0|0|3|0|1|0|0|0|1|0|0|0|0|0|1|0|3|4|2|0|2|1|0|1|0|0|1|0|2|0|0|0|0|0|0|1|2|1|4|4|2|0|0|0|1|0|2|2|0|0|3|3|0|2|5|4|3|6|5|7|5|4|4|3|1|5|4|7|7|9|8|7|4|6|4|2|4|5|10|10|4|3|7|6|4|3|5|3|6|7|6|2|9|12|8|12|18|26|21|20|11|13|18|7|10|9|13|26|17|12|22|25|15|19|14|21|21|20|22|15|21|19|17|12|11|16|14|13|13|12|14|21|13|13|14|15|14|18|28|17|17|18|13|14|11|5|9|11|8|5|13|15|3|9|9|8|5|11|4|13|18|12|14|9|11|7|5|11|7|9|6|10|5|12|5|13|4|5|7|13|11|5|7|16|12|11|6|7|14|9|13|12|14|13|15|15|15|14|17|9|13|12|13|15|16|16|19|11|9|14|12|14|14|15|17|12|7|15|10|12|11|11|11|12|11|12|8|19|11|13|12|10|9|15|13|13|9|15|15|12|16|11|11|15|12|11|15|11|16|10|10|16|15|15|13|12|8|9|16|12|20|22|14|21|20|11|23|17|16|16|20|23|24|22|12|28|18|16|30|19|35|29|23|41|41|37|35|30|32|36|30|26|25|34|13|30|36|25|22|27|31|27|26|32|26|39|28|41|28|33|38|29|37|39|29|41|29|33|39|35|43|41|27|41|41|40|41|49|34|35|49|50|51|39|41|39|35|57|54|55|31|54|49|52|54|52|49|57|54|67|69|77|59|62|62|64|57|53|52|64|71|50|71|59|58|73|56|58|85|75|69|81|94|94|107|80|108|94|79|77|92|105|92|86|102|120|102|95|90|74|103|100|75|81|82|78|78|75|92|75|82|82|84|66|91|67|93|91|62|65|80|74|78|96|75|78|77|75|59|69|89|91|79|77|54|71|58|66|68|69|56|65|57|64|55|72|60|66|69|55|59|60|84|74|63|66|80|85|96|70|92|71|83|80|87|67|68|75|68|83|76|63|84|62|82|75|54|60|75|64|81|75|80|85|74|83|72|84|95|58|64|70|74|74|80|83|68|75|76|62|65|61|70|76|58|57|72|73|70|69|57|78|63|78|59|71|54|57|60|48|56|49|47|51|50|64|50|62|61|73|63|56|68|70|57|60|75|65|71|71|64|74|65|68|68|73|84|73|70|89|68|67|59|55|52|57|93|68|76|63|61|62|73|65|68|69|61|70|63|63|75|89|69|75|65|71|87|70|78|61|68|54|54|60|50|60|50|45|47|45|37|50|47|35|44|39|42|41|42|48|42|39|40|45|41|33|53|39|44|37|40|33|49|39|34|34|33|39|52|45|42|48|35|34|35|41|35|42|31|29|35|23|34|25|23|23|31|22|28|27|34|31|27|25|30|29|21|24|36|17|24|16|16|18|24|19|18|18|20|23|25|26|20|23|28|14|27|18|20|21|26|21|21|15|18|21|23|17|23|27|17|17|25|20|22|25|23|16|24|29|23|24|26|17|85463|31|15|26|31|26|24|19|21|23|22|33|38|24|31|23|27|35|37|37|31|28|33|29|25|25|22|23|23|24|17|20|30|32|18|20|36|19|17|22|24|21|20|32|20|19|21|22|21|24|27|37|28|20|28|30|30|23|16|19|27|34|28|34|23|16|23|24|15|15|19|26|23|19|20|19|24|20|15|18|21|12|15|22|32|24|19|31|31|37|30|20|19|28|18|17|22|16|21|28|17|18|19|26|17|21|22|14|22|23|20|24|19|33|25|23|37|30|38|45|30|25|26|16|27|30|33|39|30|32|33|28|39|23|26|31|24|30|27|27|25|36|22|28|18|31|22|19|30|22|43|35|29|32|23|18|29|24|33|34|29|19|27|35|17|29|30|14|23|12|27|14|40|24|8|13|16|19|12|15|7|30|13|14|11|14|15|13|12|16|9|12|11|20|11|15|30|19|17|21|31|16|28|21|35|9|14|24|17|9|9|17|10|13|8|8|14|16|11|12|6|9|12|15|6|17|12|7|12|6|8|19|10|24|10|11|8|4|12|4|3|10|8|14|7|17|5|9|7|4|4|1|3|2|1|3|3|4|8|7|5|7|9|13|18|17|17|7|7|7|7|5|5|15|15|9|5|12|3|0|3|2|0|0|0|1|0|1|0|0|0|0|1|0|0|1</HistCounts>
+      </HistItem>
+    </Histograms>
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">5493</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="STATISTICS_MAXIMUM">8.1265001296997</MDI>
+      <MDI key="STATISTICS_MEAN">-1.3300914988804</MDI>
+      <MDI key="STATISTICS_MINIMUM">-19.396600723267</MDI>
+      <MDI key="STATISTICS_STDDEV">3.4671399338015</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="2">
+    <Histograms>
+      <HistItem>
+        <HistMin>-2.325561087814364e+38</HistMin>
+        <HistMax>3.030047666274353e+38</HistMax>
+        <BucketCount>1000</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>1</Approximate>
+        <HistCounts>31|15|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|26|20|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|13|33|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|59|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|10|40|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|45|5|0|0|0|0|0|0|0|0|0|53|0|0|0|0|0|0|47|0|0|49|0|46|41|152|114672|47|71|47|0|0|53|0|0|0|57|0|0|0|0|0|0|0|61|0|0|0|0|0|0|0|0|0|0|0|0|0|0|44|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|50|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|61|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|19|29|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|13|38|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|15|38</HistCounts>
+      </HistItem>
+    </Histograms>
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">-1.0842084e-19</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="STATISTICS_MAXIMUM">3.0273725370266e+38</MDI>
+      <MDI key="STATISTICS_MEAN">9.5674662250411e+34</MDI>
+      <MDI key="STATISTICS_MINIMUM">-2.3228859585666e+38</MDI>
+      <MDI key="STATISTICS_STDDEV">9.5746281576815e+36</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="3">
+    <Histograms>
+      <HistItem>
+        <HistMin>-13.99194287729263</HistMin>
+        <HistMax>11.71904229593277</HistMax>
+        <BucketCount>1000</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>1</Approximate>
+        <HistCounts>1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|1|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|1|0|0|0|1|0|1|0|0|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|0|1|2|1|0|2|1|0|2|1|1|0|0|0|0|0|0|0|0|1|1|0|0|2|0|0|0|1|1|2|1|2|0|3|0|0|0|2|0|3|3|3|0|0|1|1|2|3|1|0|2|5|4|2|7|2|2|1|2|1|3|3|5|4|1|2|5|2|4|8|2|5|2|2|4|6|4|4|4|1|7|4|4|4|5|4|7|5|9|0|4|6|8|5|11|6|7|7|5|4|5|4|8|9|7|9|11|13|11|8|10|13|9|7|7|6|16|11|10|12|10|14|21|10|14|14|11|10|15|9|24|16|15|11|13|21|16|9|20|16|16|14|20|25|16|25|30|14|15|24|18|19|24|21|22|23|19|15|27|32|25|20|31|27|31|33|28|21|21|22|20|32|28|23|26|37|38|21|35|29|34|40|33|37|32|36|31|27|40|41|35|46|40|32|50|33|43|36|40|43|41|52|54|42|45|64|67|53|54|51|64|58|67|64|56|46|54|44|51|66|71|59|61|66|63|79|68|61|57|61|59|62|64|73|89|80|76|69|81|78|97|90|94|75|84|73|82|85|77|87|65|76|85|87|86|77|81|82|99|98|84|86|98|96|91|94|96|86|92|89|99|99|91|93|87|96|93|81|84|89|116|92|90|91|85|75|62|78|85|75|61|77|72|79|89|67|86|105|77|105|104|95|96|83|88|92|77|87|81|106|85524|89|78|94|77|92|73|76|64|59|69|50|75|65|63|42|76|70|64|63|60|56|54|72|51|74|54|56|47|70|72|50|57|47|51|66|54|73|63|60|45|67|60|66|60|60|65|52|61|69|52|55|52|73|64|79|60|67|78|67|68|66|96|90|87|65|67|55|68|65|57|52|64|73|48|60|69|51|67|51|55|61|43|54|63|79|46|55|55|46|60|59|43|60|54|57|41|48|63|47|55|55|51|47|60|74|49|52|39|50|56|53|49|45|62|51|59|56|67|59|67|56|59|67|57|59|58|57|66|45|65|58|56|58|68|58|47|64|69|53|70|65|66|81|92|83|48|64|59|63|74|63|62|54|77|57|70|73|73|72|55|59|57|74|84|66|66|63|60|80|88|70|70|76|96|68|68|78|91|85|71|87|73|68|75|64|69|61|88|83|73|83|53|59|70|64|59|70|65|67|81|73|61|80|74|66|65|54|51|70|55|52|46|43|63|41|52|53|52|49|50|63|56|46|54|74|56|68|53|49|48|32|51|39|41|46|38|39|43|51|58|53|56|72|74|49|43|42|48|42|59|41|39|38|47|45|54|37|30|36|42|68|40|47|37|33|23|34|30|59|47|29|31|37|41|24|32|28|47|31|41|54|41|37|42|34|38|59|72|48|32|35|40|20|24|32|17|24|29|26|10|26|43|29|21|18|23|29|29|28|23|26|15|5|19|18|7|14|7|5|15|10|13|15|16|20|13|16|18|9|18|13|18|13|15|14|28|22|17|21|16|30|29|34|28|23|23|24|29|27|14|28|25|16|30|19|12|10|21|13|21|16|14|17|13|17|12|9|15|11|16|20|11|15|14|11|19|7|13|4|14|14|20|21|25|21|17|21|27|26|29|9|9|13|11|17|8|13|8|13|8|13|3|5|10|6|19|9|15|7|8|13|9|19|5|8|16|12|18|16|11|7|4|17|8|5|7|9|13|8|5|4|8|5|5|4|4|4|3|0|2|2|0|1|0|1|0|1|0|0|0|0|0|0|0|1</HistCounts>
+      </HistItem>
+    </Histograms>
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">4.4319315e-39</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="STATISTICS_MAXIMUM">11.706199645996</MDI>
+      <MDI key="STATISTICS_MEAN">0.5261485619698</MDI>
+      <MDI key="STATISTICS_MINIMUM">-13.979100227356</MDI>
+      <MDI key="STATISTICS_STDDEV">2.1110407133098</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="4">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">90</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="5">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">2.5174327e-41</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="6">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">11139</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="7">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">-3.8751475e-34</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="8">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">-9999</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="9">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">0.007859733</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="10">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">-9999</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="11">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">0.007859733</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="12">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">-9999</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="13">
+    <Metadata>
+      <MDI key="_FillValue">-9999</MDI>
+      <MDI key="_Netcdf4Dimid">0</MDI>
+      <MDI key="cell_methods">time: maximum within days time: mean within months time: mean over years</MDI>
+      <MDI key="grid_mapping">crs</MDI>
+      <MDI key="long_description">Climatological mean of monthly mean maximum daily temperature</MDI>
+      <MDI key="long_name">Temperature Climatology (Max.)</MDI>
+      <MDI key="NETCDF_DIM_time">0</MDI>
+      <MDI key="NETCDF_VARNAME">tmax</MDI>
+      <MDI key="standard_name">air_temperature</MDI>
+      <MDI key="units">celsius</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

@@ -45,22 +45,47 @@ newUs.json: build/us.json
 	    -- newUs=$<
 
 
-# relief.tiff: band1Out2.tif
+# build/relief.tiff: stuff.tif
 # 	gdalwarp \
 # 	  -r lanczos \
+# 	  -t_srs "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs " \
+# 	  -te -2950000 1000000 -1000000 2950000 \
 # 	  -ts 960 0 \
-# 	  -t_srs "+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs " \
-# 	  band1Out2.tif \
-# 	  relief.tiff
+# 	  stuff.tif \
+# 	  build/relief.tiff
 
-build/relief.tiff: band1Out2.tif
+build/tempCol.tiff: stuff.tif
+	gdaldem \
+	color-relief \
+	  stuff.tif \
+	  color_temp.txt \
+	  build/tempCol.tiff
+
+build/final.tiff: build/tempCol.tiff
+	gdalwarp \
+	  -r lanczos \
+	  -ts 960 0 \
+	  -t_srs EPSG:4326 \
+	  build/tempCol.tiff \
+	  build/final.tiff
+
+build/relief.tiff: build/final.tiff
 	gdalwarp \
 	  -r lanczos \
 	  -ts 960 0 \
 	  -t_srs "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs " \
   -te -2950000 1000000 -1000000 2950000 \
-	  band1Out2.tif \
+	  build/final.tiff \
 	  build/relief.tiff
+
+# build/relief.tiff: band1Out.tif
+# 	gdalwarp \
+# 	  -r lanczos \
+# 	  -ts 960 0 \
+# 	  -t_srs "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs " \
+#   -te -2950000 1000000 -1000000 2950000 \
+# 	  band1Out.tif \
+# 	  build/relief.tiff
 
 
 band1.png: build/relief.tiff
