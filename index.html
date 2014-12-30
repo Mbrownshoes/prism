@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <met charset="utf-8">
 <style>
-/*#land {
-	fill: #ddd;
-	stroke: #fff;
-}*/
 #land {
+	stroke: #fff;
+}
+/*#land {
   fill: none;
   stroke: #000;
   stroke-linejoin: round;
-}
+}*/
 
 </style>
 
@@ -43,6 +42,8 @@ var svg = d3.select("body")
 	.attr("width", width)
 	.attr("height", height);
 
+
+var test, allProv, indProv;
 d3.json("prov.json", function(error, BC) {
 	if (error) return console.log(error);
 
@@ -55,17 +56,38 @@ d3.json("prov.json", function(error, BC) {
 // 		.attr("xlink:href", "band1.jpg")
 // 		.attr("height", height)
 // 		.attr("class", "bg")
-
-
+allProv = topojson.feature(BC, BC.objects.prov)
+indProv = allProv.features;
 // });
 
 // d3.json("prov.json", function(error, BC) {
 //   var defs = svg.append("defs");
 
-  svg.append("path")
-      .datum(topojson.feature(BC, BC.objects.prov))
-      .attr("id", "land")
-      .attr("d", path);
+
+svg.selectAll("path")
+	.data(topojson.feature(BC, BC.objects.prov).features)
+	.enter()
+	.append("path")
+	.attr("d", path)
+	.style("fill", function(d){
+		console.log(d)
+		if (d.properties.province == "British Columbia") {
+			return "none"
+		} else { 
+			return "#ddd";
+		}
+	})
+	.attr("id", "land");
+  // svg.append("path")
+  //     .datum(topojson.feature(BC, BC.objects.prov).features)
+  //     .attr("d", path)
+  //     .style("fill", function(d,i) {
+  //     	test = d;
+  //     	console.log(i)
+  //     	if (d.properties.province == "British Columbia")
+  //     		{return "blue"}
+      	
+  //     });
 
   svg.append("clipPath")
       .attr("id", "clip")
@@ -87,7 +109,8 @@ d3.json("newUs.json", function(error, us) {
   svg.append("path")
       .datum(topojson.feature(us, alaskaState))
       .attr("id", "land")
-      .attr("d", path);
+      .attr("d", path)
+      .style("fill","#ddd");
 
 });
 
