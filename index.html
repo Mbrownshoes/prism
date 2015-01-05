@@ -9,6 +9,9 @@
   stroke: #000;
   stroke-linejoin: round;
 }*/
+.leg {
+	font:12px sans-serif;
+}
 
 </style>
 
@@ -137,14 +140,17 @@ legend
 	});
 
 legend.append("text")
-	.attr("y", 590)
+	.attr("y", 595)
 	.attr("x", function(d, i) {
-		return (width - 240) - (i * ls_w) - ls_w - 4;
+		return (width - 240) - (i * ls_w) - ls_w - 10;
 	})
+	.attr("class", "leg")
 	.text(function(d,i) {
-	
-		console.log(colors.range().length - i-1)
-		return legend_labels[colors.range().length - i-1];
+
+		if (i === 0)
+			return legend_labels[colors.range().length - i-1] + "\xB0 C";
+		else
+			return legend_labels[colors.range().length - i-1];
 	});
 
 </script>
