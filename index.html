@@ -14,6 +14,13 @@
 	font:12px sans-serif;
 }
 
+.g-summary {
+  line-height: 1.35em;
+  position: absolute;
+  width: 340px;
+  color: #333;
+}
+
 </style>
 
 <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -27,8 +34,15 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
  <h1>British Columbia High-Resolution PRISM Climatology</h1>
-
+<p class="map" id="map">
 <script>
+
+d3.select(".map")
+	.append("h2")
+	.html("Average daily maximum temperature values for<br><strong>January</strong>")
+	.attr("class","g-summary")
+
+
 var width = 960,
 	height = 600
 
