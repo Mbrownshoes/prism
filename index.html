@@ -2,14 +2,11 @@
 <met charset="utf-8">
 	<link rel="stylesheet" href="main.css"> 
 <style>
+
 #land {
 	stroke: #fff;
 }
-/*#land {
-  fill: none;
-  stroke: #000;
-  stroke-linejoin: round;
-}*/
+
 .leg {
 	font:12px sans-serif;
 }
@@ -23,19 +20,23 @@
 
 </style>
 
-<!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
-<!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
+
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
-
+<script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
  <h1>British Columbia High-Resolution PRISM Climatology</h1>
 <p class="map" id="map">
+
 <script>
+
+queue()
+	.defer(d3.json,"prov.json")
+	.defer(d3.json,"newUs.json")
+	.await(render);
 
 d3.select(".map")
 	.append("h2")
@@ -71,104 +72,85 @@ var legend = svg.selectAll('g.legendEntry')
 	.enter()
 	.append("g").attr('class', 'legendEntry');
 
-var test, allProv, indProv;
-d3.json("prov.json", function(error, BC) {
-	if (error) return console.log(error);
+var allProv;
 
-// 	svg.append("path")
-// 		.attr("id", "land")
-// 		.datum(topojson.feature(BC, BC.objects.prov))
-// 		.attr("d", path)
+function render(error, prov, newUs){
+	
+	if (error) {
+	    loading.text("Sorry, there has been an error. " +
+	                 "Please refresh and try again.");
+	    console.log(error);
+	  }
 
-// 	svg.append("image")
-// 		.attr("xlink:href", "band1.jpg")
-// 		.attr("height", height)
-// 		.attr("class", "bg")
-allProv = topojson.feature(BC, BC.objects.prov)
-indProv = allProv.features;
-// });
+	BC = prov;
+	us = newUs;
 
-// d3.json("prov.json", function(error, BC) {
-//   var defs = svg.append("defs");
+	svg.selectAll("path")
+		.data(topojson.feature(BC, BC.objects.prov).features)
+		.enter()
+		.append("path")
+		.attr("d", path)
+		.style("fill", function(d){
+			if (d.properties.province == "British Columbia") {
+				return "none"
+			} else { 
+				return "#ddd";
+			}
+		})
+		.attr("id", "land");
 
+	  svg.append("clipPath")
+	      .attr("id", "clip")
+	    .append("use")
+	      .attr("xlink:href", "#land");
 
-svg.selectAll("path")
-	.data(topojson.feature(BC, BC.objects.prov).features)
-	.enter()
-	.append("path")
-	.attr("d", path)
-	.style("fill", function(d){
-		if (d.properties.province == "British Columbia") {
-			return "none"
-		} else { 
-			return "#ddd";
-		}
-	})
-	.attr("id", "land");
-  // svg.append("path")
-  //     .datum(topojson.feature(BC, BC.objects.prov).features)
-  //     .attr("d", path)
-  //     .style("fill", function(d,i) {
-  //     	test = d;
-  //     	console.log(i)
-  //     	if (d.properties.province == "British Columbia")
-  //     		{return "blue"}
-      	
-  //     });
+	  svg.append("image")
+	      .attr("clip-path", "url(#clip)")
+	      .attr("xlink:href", "band1.png")
+	      .attr("width", width)
+	      .attr("height", height);
 
-  svg.append("clipPath")
-      .attr("id", "clip")
-    .append("use")
-      .attr("xlink:href", "#land");
+	  svg.append("use")
+	      .attr("xlink:href", "#land");
 
-  svg.append("image")
-      .attr("clip-path", "url(#clip)")
-      .attr("xlink:href", "band1.png")
-      .attr("width", width)
-      .attr("height", height);
+	// add Alaska
+	var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
 
-  svg.append("use")
-      .attr("xlink:href", "#land");
-});
-d3.json("newUs.json", function(error, us) {
-  var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
-
-  svg.append("path")
-      .datum(topojson.feature(us, alaskaState))
-      .attr("id", "land")
-      .attr("d", path)
-      .style("fill","#ddd");
-
-});
+	svg.append("path")
+	  .datum(topojson.feature(us, alaskaState))
+	  .attr("id", "land")
+	  .attr("d", path)
+	  .style("fill","#ddd");
 
 
-var ls_w = 40;
+	// legend 
+	var ls_w = 40;
+	legend
+		.append("rect")
+		.attr("y", 570)
+		.attr("x", function(d, i) {
+			return (width - 240) - (i * ls_w) - 2*ls_w;
+		})
+		.attr("width", ls_w)
+		.attr("height", 10)
+		.style("fill", function(d) {
+			return d;
+		});
 
-legend
-	.append("rect")
-	.attr("y", 570)
-	.attr("x", function(d, i) {
-		return (width - 240) - (i * ls_w) - 2*ls_w;
-	})
-	.attr("width", ls_w)
-	.attr("height", 10)
-	.style("fill", function(d) {
-		return d;
-	});
+	legend.append("text")
+		.attr("y", 595)
+		.attr("x", function(d, i) {
+			return (width - 240) - (i * ls_w) - ls_w - 10;
+		})
+		.attr("class", "leg")
+		.text(function(d,i) {
 
-legend.append("text")
-	.attr("y", 595)
-	.attr("x", function(d, i) {
-		return (width - 240) - (i * ls_w) - ls_w - 10;
-	})
-	.attr("class", "leg")
-	.text(function(d,i) {
-
-		if (i === 0)
-			return legend_labels[colors.range().length - i-1] + "\xB0 C";
-		else
-			return legend_labels[colors.range().length - i-1];
-	});
+			if (i === 0)
+				return legend_labels[colors.range().length - i-1] + "\xB0 C";
+			else
+				return legend_labels[colors.range().length - i-1];
+		});
+};
 
 </script>
 
