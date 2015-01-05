@@ -27,11 +27,10 @@ var width = 960,
 	height = 600
 
 var colors = d3.scale.quantize()
-	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,55,191)", "rgb(254,224,144)", "rgb(253,174,97)", "rgb(244,109,67)", "rgb(215,48,39)", "rgb(165,0,38)"]);
+	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,255,191)", "rgb(254,224,144)", "rgb(253,174,97)", "rgb(244,109,67)", "rgb(215,48,39)", "rgb(165,0,38)"]);
 
-var legend = d3.scale.linear()
-	.domain([-20, -15, -10, -5, 0, 5, 10, 15, 20, 25])
-	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,55,191)", "rgb(254,224,144)", "rgb(253,174,97)", "rgb(244,109,67)", "rgb(215,48,39)", "rgb(165,0,38)"])
+var legend_labels = ["-20", "-15", "-10", "-5", "0", "5", "10", "15", "20", "25"]
+
 // var projection = d3.geo.albers()
 // 	.rotate([96, 0]) 
 // 	.center([-32, 53.9]) 
@@ -47,6 +46,10 @@ var svg = d3.select("body")
 	.attr("width", width)
 	.attr("height", height);
 
+var legend = svg.selectAll('g.legendEntry')
+	.data(colors.range().reverse())
+	.enter()
+	.append("g").attr('class', 'legendEntry');
 
 var test, allProv, indProv;
 d3.json("prov.json", function(error, BC) {
@@ -75,7 +78,6 @@ svg.selectAll("path")
 	.append("path")
 	.attr("d", path)
 	.style("fill", function(d){
-		console.log(d)
 		if (d.properties.province == "British Columbia") {
 			return "none"
 		} else { 
@@ -120,4 +122,40 @@ d3.json("newUs.json", function(error, us) {
 });
 
 
+var ls_w = 40;
+
+legend
+	.append("rect")
+	.attr("y", 570)
+	.attr("x", function(d, i) {
+		return (width - 240) - (i * ls_w) - 2*ls_w;
+	})
+	.attr("width", ls_w)
+	.attr("height", 10)
+	.style("fill", function(d) {
+		return d;
+	});
+
+legend.append("text")
+	.attr("y", 590)
+	.attr("x", function(d, i) {
+		return (width - 240) - (i * ls_w) - ls_w - 4;
+	})
+	.text(function(d,i) {
+	
+		console.log(colors.range().length - i-1)
+		return legend_labels[colors.range().length - i-1];
+	});
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
