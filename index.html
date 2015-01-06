@@ -18,6 +18,28 @@
   color: #333;
 }
 
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
+.slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+  pointer-events: none;
+}
 </style>
 
 
@@ -26,11 +48,10 @@
 <script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
  <h1>British Columbia High-Resolution PRISM Climatology</h1>
 <p class="map" id="map">
-
+<div id="slider"></div>
 <script>
 
 queue()
@@ -45,7 +66,11 @@ d3.select(".map")
 
 
 var width = 960,
-	height = 600
+	height = 600,
+	sliderHeight = 20,
+	sliderWidth = 260;
+
+var margin = {top: 10, right: 10, bottom: 10, left: 10}
 
 var colors = d3.scale.quantize()
 	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,255,191)", "rgb(254,224,144)", "rgb(253,174,97)", "rgb(244,109,67)", "rgb(215,48,39)", "rgb(165,0,38)"]);
@@ -72,7 +97,57 @@ var legend = svg.selectAll('g.legendEntry')
 	.enter()
 	.append("g").attr('class', 'legendEntry');
 
-var allProv;
+var sliderContainer = d3.select("#slider").append("svg")
+      .attr("width", sliderWidth + margin.left + margin.right)
+      .attr("height", sliderHeight + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var x = d3.scale.linear()
+      .domain([1, 12])
+      .range([0, sliderWidth])
+      .clamp(true);
+
+var brushToMonth = d3.scale.threshold()
+	.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+	.range([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+var brush = d3.svg.brush()
+	.x(x)
+	.extent([1, 1])
+	.on("brush", brushed);
+
+sliderContainer.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + sliderHeight / 2 + ")")
+  .call(d3.svg.axis()
+          .scale(x)
+          .orient("bottom")
+          .ticks(8)
+          .tickFormat(function(d) { 
+          	console.log(d)
+          	return d; })
+          .tickSize(0)
+          .tickPadding(12))
+          .select(".domain")
+          .select(function() { 
+            return this.parentNode.appendChild(this.cloneNode(true)); 
+          })
+          .attr("class", "halo");
+
+var slider = sliderContainer.append("g")
+  .attr("class", "slider")
+  .call(brush);
+
+slider.selectAll(".extent, .resize").remove();
+
+slider.select(".background").attr("height", sliderHeight);
+
+var handle = slider.append("circle")
+  .attr("class", "handle")
+  .attr("transform", "translate(0," + sliderHeight / 2 + ")")
+  .attr("r", 9);
+
 
 function render(error, prov, newUs){
 	
@@ -121,37 +196,55 @@ function render(error, prov, newUs){
 	  .attr("id", "land")
 	  .attr("d", path)
 	  .style("fill","#ddd");
-
-
-	// legend 
-	var ls_w = 40;
-	legend
-		.append("rect")
-		.attr("y", 570)
-		.attr("x", function(d, i) {
-			return (width - 240) - (i * ls_w) - 2*ls_w;
-		})
-		.attr("width", ls_w)
-		.attr("height", 10)
-		.style("fill", function(d) {
-			return d;
-		});
-
-	legend.append("text")
-		.attr("y", 595)
-		.attr("x", function(d, i) {
-			return (width - 240) - (i * ls_w) - ls_w - 10;
-		})
-		.attr("class", "leg")
-		.text(function(d,i) {
-
-			if (i === 0)
-				return legend_labels[colors.range().length - i-1] + "\xB0 C";
-			else
-				return legend_labels[colors.range().length - i-1];
-		});
 };
 
+// legend 
+var ls_w = 40;
+legend
+	.append("rect")
+	.attr("y", 570)
+	.attr("x", function(d, i) {
+		return (width - 240) - (i * ls_w) - 2*ls_w;
+	})
+	.attr("width", ls_w)
+	.attr("height", 10)
+	.style("fill", function(d) {
+		return d;
+	});
+
+legend.append("text")
+	.attr("y", 595)
+	.attr("x", function(d, i) {
+		return (width - 240) - (i * ls_w) - ls_w - 10;
+	})
+	.attr("class", "leg")
+	.text(function(d,i) {
+
+		if (i === 0)
+			return legend_labels[colors.range().length - i-1] + "\xB0 C";
+		else
+			return legend_labels[colors.range().length - i-1];
+	});
+
+ // Draw the map for the first time
+ slider
+    .call(brush.event)
+  .transition() // gratuitous intro!
+    .duration(750)
+    .call(brush.extent([2, 2]))
+    .call(brush.event);
+
+
+function brushed() {
+	var value = brush.extent()[0];
+	if (d3.event.sourceEvent) {
+		value = x.invert(d3.mouse(this)[0]);
+		brush.extent([value, value]);
+	}
+	handle.attr("cx", x(value));
+	var brushDate = brushToMonth(value);
+	// d3.select("body").style("background-color", d3.hsl(value, .8, .8));
+}
 </script>
 
 
