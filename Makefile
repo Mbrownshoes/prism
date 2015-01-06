@@ -46,15 +46,19 @@ newUs.json: build/us.json
 # 	  -ts 960 0 \
 # 	  stuff.tif \
 # 	  build/relief.tiff
+# build/jan.tif: tmax.nc
+# 	gdal_translate -of GTiff NETCDF:"tmax.nc":tmax -b 1 build/jan.tif
 
-build/feb.tif: tmax.nc
-	gdal_translate -of GTiff NETCDF:"tmax.nc":tmax -b 2 build/feb.tif
+# build/feb.tif: tmax.nc
+# 	gdal_translate -of GTiff NETCDF:"tmax.nc":tmax -b 2 build/feb.tif
 
+# build/mar.tif: tmax.nc
+# 	gdal_translate -of GTiff NETCDF:"tmax.nc":tmax -b 2 build/mar.tif
 
-build/tempCol.tiff: build/feb.tif
+build/tempCol.tiff: build/jan.tif
 	gdaldem \
 	color-relief \
-	  build/feb.tif \
+	  build/jan.tif \
 	  color_temp.txt \
 	  build/tempCol.tiff
 
@@ -77,5 +81,5 @@ build/relief.tiff: build/final.tiff
 
 
 
-band2.png: build/relief.tiff
-	gdal_translate -of PNG build/relief.tiff band2.png
+band1.png: build/relief.tiff
+	gdal_translate -of PNG build/relief.tiff band1.png

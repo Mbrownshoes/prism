@@ -1,6 +1,6 @@
 <PAMDataset>
-  <SRS>PROJCS["North_America_Albers_Equal_Area_Conic",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.2572221010002,AUTHORITY["EPSG","7019"]],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4269"]],PROJECTION["Albers_Conic_Equal_Area"],PARAMETER["standard_parallel_1",20],PARAMETER["standard_parallel_2",60],PARAMETER["latitude_of_center",40],PARAMETER["longitude_of_center",-96],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]]]</SRS>
-  <GeoTransform> -1.4000416666666700e+02,  8.3333333333335414e-03,  0.0000000000000000e+00,  6.1995833333333302e+01,  0.0000000000000000e+00, -8.3333333333333297e-03</GeoTransform>
+  <SRS>PROJCS["unnamed",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.2572221010002,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4269"]],PROJECTION["Albers_Conic_Equal_Area"],PARAMETER["standard_parallel_1",20],PARAMETER["standard_parallel_2",60],PARAMETER["latitude_of_center",40],PARAMETER["longitude_of_center",-96],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]]]</SRS>
+  <GeoTransform> -2.9500000000000000e+06,  2.0312500000000000e+03,  0.0000000000000000e+00,  2.9500000000000000e+06,  0.0000000000000000e+00, -2.0312500000000000e+03</GeoTransform>
   <Metadata domain="IMAGE_STRUCTURE">
     <MDI key="INTERLEAVE">PIXEL</MDI>
   </Metadata>
@@ -52,7 +52,6 @@ Wed Oct 23 11:00:18 2013: GDAL CreateCopy( bc_tmax_7100.01.tiff.nc, ... )</MDI>
     <MDI key="tmax#units">celsius</MDI>
   </Metadata>
   <PAMRasterBand band="1">
-    <NoDataValue le_hex_equiv="000000000000F87F">nan</NoDataValue>
     <Metadata>
       <MDI key="_FillValue">-9999</MDI>
       <MDI key="_Netcdf4Dimid">0</MDI>
@@ -69,11 +68,5 @@ Wed Oct 23 11:00:18 2013: GDAL CreateCopy( bc_tmax_7100.01.tiff.nc, ... )</MDI>
       <MDI key="STATISTICS_STDDEV">0</MDI>
       <MDI key="units">celsius</MDI>
     </Metadata>
-  </PAMRasterBand>
-  <PAMRasterBand band="2">
-    <NoDataValue le_hex_equiv="000000000000F87F">nan</NoDataValue>
-  </PAMRasterBand>
-  <PAMRasterBand band="3">
-    <NoDataValue le_hex_equiv="000000000000F87F">nan</NoDataValue>
   </PAMRasterBand>
 </PAMDataset>
