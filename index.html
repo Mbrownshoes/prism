@@ -40,6 +40,7 @@
   stroke-opacity: .5;
   stroke-width: 1.25px;
   pointer-events: none;
+  padding-right: 10px;
 
 }
 
@@ -83,7 +84,7 @@ var width = 960,
 var margin = {top: 10, right: 10, bottom: 10, left: 10}
 
 var colors = d3.scale.quantize()
-	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,255,178)", "rgb(54,217,118)", "rgb(254,178,76)", "rgb(253,141,60)", "rgb(252,78,42)", "rgb(227,26,28)", "rgb(177,0,38)"]);
+	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,255,178)", "rgb(254,217,118)", "rgb(254,178,76)", "rgb(253,141,60)", "rgb(252,78,42)", "rgb(227,26,28)", "rgb(177,0,38)"]);
 
 var legend_labels = ["-20", "-15", "-10", "-5", "0", "5", "10", "15", "20", "25", "30"]
 
@@ -110,7 +111,7 @@ var legend = svg.selectAll('g.legendEntry')
 	.append("g").attr('class', 'legendEntry');
 
 var sliderContainer = d3.select("#slider").append("svg")
-      .attr("width", sliderWidth + margin.left + margin.right)
+      .attr("width", sliderWidth + margin.left + margin.right + 10)
       .attr("height", sliderHeight + margin.top + margin.bottom)
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top  + ")");
@@ -119,6 +120,11 @@ var x = d3.scale.linear()
       .domain([1, 12])
       .range([0, sliderWidth])
       .clamp(true);
+
+var xSlide = d3.time.scale()
+	.domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
+	.range([0, sliderWidth])
+	.clamp(true);
 
 var brushToMonth = d3.scale.threshold()
 	.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
@@ -129,15 +135,30 @@ var brush = d3.svg.brush()
 	.extent([current.month, current.month])
 	.on("brush", brushed);
 
+var xTicks = {
+  "1": "Jan",
+  "2": "Feb",
+  "3": "Mar",
+  "4": "Apr",
+  "5": "May",
+  "6": "Jun",
+  "7": "Jul",
+  "8": "Aug",
+  "9": "Sep",
+  "10": "Oct",
+  "11": "Nov",
+  "12": "Dec"
+};
+
 sliderContainer.append("g")
   .attr("class", "x axis")
   .attr("transform", "translate(0," + sliderHeight / 2 + ")")
   .call(d3.svg.axis()
           .scale(x)
           .orient("bottom")
-          .ticks(8)
+          .ticks(6)
           .tickFormat(function(d) { 
-          	return d; })
+          	return xTicks[d]; })
           .tickSize(0)
           .tickPadding(12))
           .select(".domain")
@@ -267,8 +288,7 @@ legend.append("text")
 function brushed() {
 	var value = brush.extent()[0];
 	if (d3.event.sourceEvent) {
-		value = x.invert(d3.mouse(this)[0]);
-		
+		value = parseInt(x.invert(d3.mouse(this)[0]));
 		brush.extent([value, value]);
 	}
 	handle.attr("cx", x(value));
