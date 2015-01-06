@@ -102,6 +102,8 @@ var svg = d3.select(".g-graphic")
 	.attr("width", width)
 	.attr("height", height);
 
+var current = {"month":1};
+
 var legend = svg.selectAll('g.legendEntry')
 	.data(colors.range().reverse())
 	.enter()
@@ -124,7 +126,7 @@ var brushToMonth = d3.scale.threshold()
 
 var brush = d3.svg.brush()
 	.x(x)
-	.extent([1, 1])
+	.extent([current.month, current.month])
 	.on("brush", brushed);
 
 sliderContainer.append("g")
@@ -135,7 +137,6 @@ sliderContainer.append("g")
           .orient("bottom")
           .ticks(8)
           .tickFormat(function(d) { 
-          	console.log(d)
           	return d; })
           .tickSize(0)
           .tickPadding(12))
@@ -176,7 +177,8 @@ function render(error, prov, newUs){
 		.call(brush.event);
 
 	drawBackgroundMap();
-	drawMap(1);
+	console.log(current.month)
+	drawMap(current.month);
 
 };
 
@@ -209,7 +211,10 @@ function drawBackgroundMap(){
 };
 
 function drawMap(map) {
+	console.log(map)
 	
+	svg.selectAll("#clip").remove();
+
 	svg.append("clipPath")
 		.attr("id", "clip")
 		.append("use")
@@ -217,7 +222,7 @@ function drawMap(map) {
 
 	svg.append("image")
 		.attr("clip-path", "url(#clip)")
-		.attr("xlink:href", "band1.png")
+		.attr("xlink:href", "band" + current.month +".png")
 		.attr("width", width)
 		.attr("height", height);
 
@@ -263,11 +268,19 @@ function brushed() {
 	var value = brush.extent()[0];
 	if (d3.event.sourceEvent) {
 		value = x.invert(d3.mouse(this)[0]);
+		
 		brush.extent([value, value]);
 	}
 	handle.attr("cx", x(value));
-	var brushDate = brushToMonth(value);
-	// d3.select("body").style("background-color", d3.hsl(value, .8, .8));
+	console.log(value)
+	var brushDate = brushToMonth(value-1);
+	console.log(value)
+	
+	if (brushDate != current.month) {
+		current.month = brushDate;
+		console.log(brushDate)
+		drawMap(brushDate)
+	}
 }
 </script>
 
