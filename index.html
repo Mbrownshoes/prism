@@ -4,9 +4,9 @@
 <style>
 #g-play-button {
   position: absolute;
-  top: 15px;
+  top: 240px;
   left: 10px;
-  background: #004276;
+  background: rgb(116,173,209);
   padding-right: 26px;
   border-radius: 2px;
   border: none;
@@ -20,11 +20,11 @@
 }
 
 #g-play-button:hover {
-  background-color: #064d84;
+  background-color: rgb(69,117,180);
 }
 
 #g-play-button:active {
-  background-color: #002657;
+  background-color: rgb(171,217,233);
 }
 
 
@@ -131,7 +131,9 @@ var svg = d3.select(".g-graphic")
 	.attr("width", width)
 	.attr("height", height);
 
-var current = {"month":1};
+var current = {"month":1},
+	maxValue = 12,
+	moving;
 
 var legend = svg.selectAll('g.legendEntry')
 	.data(colors.range().reverse())
@@ -241,34 +243,25 @@ function paused() {
 
 
 	  } else {
+	  	console.log(current.month)
+	  	// Draw the map for the first time
+	  	if (current.month === 1 || current.month === maxValue ) {
+			slider.call(brush.event)
+				.call(brush.extent([1, 1]))
+				.call(brush.event);
+		}
+		
+		this.textContent = "Pause";
 
-  	// Draw the map for the first time
-	slider.call(brush.event)
-		.call(brush.extent([1, 1]))
-		.call(brush.event);
-	
-	this.textContent = "Pause";
+		console.log(current.month + " month in animate")
 
-	function animate(){
 		slider.transition()
-		.duration(4000)
+		.duration((maxValue - current.month) / (maxValue - 1) * 8000)
 		.ease("linear")
-		.call(brush.extent([12, 12]))
+		.call(brush.extent([maxValue, maxValue]))
 		.call(brush.event);
 
-		slider.call(brush.event)
-			.call(brush.extent([1,1]))
-			.call(brush.event);
-
-
-
-	}
-	
-	animate();
-
-
-	
-};
+	};
 };
 
 
@@ -356,7 +349,12 @@ legend.append("text")
 function brushed() {
 	var value = brush.extent()[0];
 	if (d3.event.sourceEvent) {
-		value = parseInt(x.invert(d3.mouse(this)[0]));
+		if (d3.event.sourceEvent.target.parentNode === this) {
+			playButton.text("Play");
+			targetValue = x.invert(d3.mouse(this)[0]);
+			move();
+		}
+		value = Math.round(x.invert(d3.mouse(this)[0]));
 		brush.extent([value, value]);
 	}
 	handle.attr("cx", x(value));
@@ -369,6 +367,29 @@ function brushed() {
 // 			if (current.month === 12) {
 // 	document.getElementById("g-play-button").textContent = "Play"
 // }
+}
+
+function move() {
+	var copyValue = current.month;
+	if (moving) return false;
+	moving = true;
+
+	d3.timer(function() {
+		if (copyValue !== current.month) return !(moving = false);
+
+		copyValue = current.month = Math.abs(current.month - maxValue) < 1e-3
+		? targetValue
+		: targetValue * .25 + current.month * (1-.25);
+		console.log(copyValue)
+	
+
+	slider.call(brush.event)
+				.call(brush.extent([current.month, current.month]))
+				.call(brush.event);
+
+	return !(moving = current.month !== maxValue);
+});
+
 }
 </script>
 
