@@ -2,6 +2,31 @@
 <met charset="utf-8">
 	<link rel="stylesheet" href="main.css"> 
 <style>
+#g-play-button {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  background: #004276;
+  padding-right: 26px;
+  border-radius: 2px;
+  border: none;
+  color: white;
+  margin: 0;
+  padding: 0 12px;
+  width: 68px;
+  cursor: pointer;
+  height: 30px;
+  font: 13px sans-serif;
+}
+
+#g-play-button:hover {
+  background-color: #064d84;
+}
+
+#g-play-button:active {
+  background-color: #002657;
+}
+
 
 #land {
 	stroke: #fff;
@@ -62,6 +87,8 @@
  <h1>British Columbia High-Resolution PRISM Climatology</h1>
 <div id="slider">
 </div>
+<button id="g-play-button">Pause</button>
+
 <div class = "g-graphic">
 </div>
 <script>
@@ -136,6 +163,9 @@ var brush = d3.svg.brush()
 	.extent([current.month, current.month])
 	.on("brush", brushed);
 
+var playButton = d3.select("#g-play-button");
+
+
 var xTicks = {
   "1": "Jan",
   "2": "Feb",
@@ -182,6 +212,7 @@ var handle = slider.append("circle")
   .attr("r", 9);
 
 
+
 function render(error, prov, newUs){
 	
 	if (error) {
@@ -193,16 +224,53 @@ function render(error, prov, newUs){
 	BC = prov;
 	us = newUs;
 
-	// Draw the map for the first time
-	slider.call(brush.event)
-		.call(brush.extent([1, 1]))
-		.call(brush.event);
-
 	drawBackgroundMap();
-	console.log(current.month)
 	drawMap(current.month);
 
 };
+
+playButton
+	.on("click", paused)
+	.each(paused);
+
+function paused() {
+	if (slider.node().__transition__) {
+	    slider.interrupt();
+	    this.textContent = "Play";
+	    console.log("in transition!")
+
+
+	  } else {
+
+  	// Draw the map for the first time
+	slider.call(brush.event)
+		.call(brush.extent([1, 1]))
+		.call(brush.event);
+	
+	this.textContent = "Pause";
+
+	function animate(){
+		slider.transition()
+		.duration(4000)
+		.ease("linear")
+		.call(brush.extent([12, 12]))
+		.call(brush.event);
+
+		slider.call(brush.event)
+			.call(brush.extent([1,1]))
+			.call(brush.event);
+
+
+
+	}
+	
+	animate();
+
+
+	
+};
+};
+
 
 
 function drawBackgroundMap(){
@@ -233,7 +301,6 @@ function drawBackgroundMap(){
 };
 
 function drawMap(map) {
-	console.log(map)
 	
 	svg.selectAll("#clip").remove();
 
@@ -256,7 +323,7 @@ function drawMap(map) {
 
 
 // legend 
-var ls_w = 40;
+var ls_w = 26;
 legend
 	.append("rect")
 	.attr("y", 570)
@@ -293,15 +360,15 @@ function brushed() {
 		brush.extent([value, value]);
 	}
 	handle.attr("cx", x(value));
-	console.log(value)
 	var brushDate = brushToMonth(value-1);
-	console.log(value)
 	
 	if (brushDate != current.month) {
 		current.month = brushDate;
-		console.log(brushDate)
 		drawMap(brushDate)
 	}
+// 			if (current.month === 12) {
+// 	document.getElementById("g-play-button").textContent = "Play"
+// }
 }
 </script>
 
