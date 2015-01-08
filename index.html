@@ -265,6 +265,7 @@ function render(error, prov, newUs){
 	drawBackgroundMap();
 	drawMap(current.month);
 
+
 };
 
 playButton
@@ -279,21 +280,21 @@ function paused() {
 
 
 	  } else {
-	  	console.log(current.month)
+	  	
 	  	// Draw the map for the first time
 	  	if (current.month === 1 || current.month === maxValue ) {
 			slider.call(brush.event)
 				.call(brush.extent([1, 1]))
 				.call(brush.event);
+
 		}
 		
+
 		this.textContent = "Pause";
 
 		console.log(current.month + " month in animate")
-
 		slider.transition()
 		.duration((maxValue - current.month) / (maxValue - 1) * 10000)
-		.delay(1000)  
 		.ease("linear")
 		.call(brush.extent([maxValue, maxValue]))
 		.call(brush.event);
