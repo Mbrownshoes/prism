@@ -43,6 +43,19 @@
   color: #333;
 }
 
+ .tick line {
+  stroke: #aaa;
+  shape-rendering: crispEdges;
+}
+
+.g-axis .tick-special {
+  font-weight: bold;
+  fill: black;
+}
+
+/*.xAxis {
+}
+*/
 .axis .domain {
   fill: none;
   stroke: #000;
@@ -151,10 +164,10 @@ var x = d3.scale.linear()
       .range([0, sliderWidth])
       .clamp(true);
 
-var xSlide = d3.time.scale()
-	.domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
-	.range([0, sliderWidth])
-	.clamp(true);
+// var xSlide = d3.time.scale()
+// 	.domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
+// 	.range([0, sliderWidth])
+// 	.clamp(true);
 
 var brushToMonth = d3.scale.threshold()
 	.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
@@ -168,20 +181,35 @@ var brush = d3.svg.brush()
 var playButton = d3.select("#g-play-button");
 
 
+
 var xTicks = {
   "1": "Jan",
-  "2": "Feb",
+  "2": "",
   "3": "Mar",
-  "4": "Apr",
+  "4": "",
   "5": "May",
-  "6": "Jun",
+  "6": "",
   "7": "Jul",
-  "8": "Aug",
+  "8": "",
   "9": "Sep",
-  "10": "Oct",
+  "10": "",
   "11": "Nov",
-  "12": "Dec"
+  "12": ""
 };
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .ticks(12)
+    .tickFormat(function(d) { 
+          	return xTicks[d]; })
+    .tickSize(10, 0)
+    .tickPadding(0);
+
+// x.domain([1, 12]);
+// xAxis.tickValues(d3.range(0, 12));
+var tick = sliderContainer.selectAll(".tick")
+      .each(function() { this.parentNode.appendChild(this); });
 
 sliderContainer.append("g")
   .attr("class", "x axis")
@@ -189,16 +217,24 @@ sliderContainer.append("g")
   .call(d3.svg.axis()
           .scale(x)
           .orient("bottom")
-          .ticks(6)
+          .ticks(12)
           .tickFormat(function(d) { 
           	return xTicks[d]; })
           .tickSize(0)
           .tickPadding(12))
-          .select(".domain")
+          .select(".domain") // rest stylized the slider to hide ticks
           .select(function() { 
             return this.parentNode.appendChild(this.cloneNode(true)); 
           })
           .attr("class", "halo");
+
+sliderContainer.call(xAxis)
+     
+
+
+
+
+      
 
 var slider = sliderContainer.append("g")
   .attr("class", "slider")
@@ -256,7 +292,8 @@ function paused() {
 		console.log(current.month + " month in animate")
 
 		slider.transition()
-		.duration((maxValue - current.month) / (maxValue - 1) * 8000)
+		.duration((maxValue - current.month) / (maxValue - 1) * 10000)
+		.delay(1000)  
 		.ease("linear")
 		.call(brush.extent([maxValue, maxValue]))
 		.call(brush.event);
