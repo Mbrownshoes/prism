@@ -72,13 +72,14 @@
   stroke-linecap: round;
 }
 
-.slider .handle {
+.g-slider .background {
+  cursor: ew-resize !important;
+}
+.g-slider .handle {
   fill: #fff;
   stroke: #000;
-  stroke-opacity: .5;
-  stroke-width: 1.25px;
+  stroke-width: 1.0px;
   pointer-events: none;
-  padding-right: 10px;
 
 }
 
@@ -106,10 +107,7 @@
 </div>
 <script>
 
-queue()
-	.defer(d3.json,"prov.json")
-	.defer(d3.json,"newUs.json")
-	.await(render);
+
 
 d3.select(".g-graphic")
 	.append("h2")
@@ -232,12 +230,8 @@ sliderContainer.call(xAxis)
      
 
 
-
-
-      
-
 var slider = sliderContainer.append("g")
-  .attr("class", "slider")
+  .attr("class", "g-slider")
   .call(brush);
 
 slider.selectAll(".extent, .resize").remove();
@@ -249,7 +243,10 @@ var handle = slider.append("circle")
   .attr("transform", "translate(0," + sliderHeight / 2 + ")")
   .attr("r", 9);
 
-
+queue()
+	.defer(d3.json,"prov.json")
+	.defer(d3.json,"newUs.json")
+	.await(render);
 
 function render(error, prov, newUs){
 	
@@ -263,10 +260,12 @@ function render(error, prov, newUs){
 	us = newUs;
 
 	drawBackgroundMap();
-	drawMap(current.month);
 
-
+	
 };
+
+
+drawMap(current.month);
 
 playButton
 	.on("click", paused)
@@ -276,13 +275,12 @@ function paused() {
 	if (slider.node().__transition__) {
 	    slider.interrupt();
 	    this.textContent = "Play";
-	    console.log("in transition!")
-
 
 	  } else {
 	  	
 	  	// Draw the map for the first time
 	  	if (current.month === 1 || current.month === maxValue ) {
+	  		console.log("starting over")
 			slider.call(brush.event)
 				.call(brush.extent([1, 1]))
 				.call(brush.event);
@@ -389,7 +387,8 @@ function brushed() {
 	if (d3.event.sourceEvent) {
 		if (d3.event.sourceEvent.target.parentNode === this) {
 			playButton.text("Play");
-			targetValue = x.invert(d3.mouse(this)[0]);
+			targetValue = d3.round(x.invert(d3.mouse(this)[0]));
+			console.log(targetValue)
 			move();
 		}
 		value = Math.round(x.invert(d3.mouse(this)[0]));
@@ -415,17 +414,16 @@ function move() {
 	d3.timer(function() {
 		if (copyValue !== current.month) return !(moving = false);
 
-		copyValue = current.month = Math.abs(current.month - maxValue) < 1e-3
+		copyValue = current.month = Math.abs(current.month - targetValue) < 1e-3
 		? targetValue
 		: targetValue * .25 + current.month * (1-.25);
-		console.log(copyValue)
+		
 	
 
 	slider.call(brush.event)
 				.call(brush.extent([current.month, current.month]))
 				.call(brush.event);
-
-	return !(moving = current.month !== maxValue);
+	return !(moving = current.month !== targetValue);
 });
 
 }
