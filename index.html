@@ -33,7 +33,7 @@
 }
 
 .leg {
-	font:12px sans-serif;
+	font:12px "Helvetica Neue", Helvetica;
 }
 
 .g-summary {
@@ -105,10 +105,8 @@
 
 <div class = "g-graphic">
 </div>
+
 <script>
-
-
-
 d3.select(".g-graphic")
 	.append("h2")
 	.html("Monthly average daily maximum temperature values")
@@ -149,7 +147,8 @@ var current = {"month":1},
 var legend = svg.selectAll('g.legendEntry')
 	.data(colors.range().reverse())
 	.enter()
-	.append("g").attr('class', 'legendEntry');
+	.append("g");
+	// .attr('class', 'legendEntry');
 
 var sliderContainer = d3.select("#slider").append("svg")
       .attr("width", sliderWidth + margin.left + margin.right + 10)
@@ -157,15 +156,11 @@ var sliderContainer = d3.select("#slider").append("svg")
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top  + ")");
 
-var x = d3.scale.linear()
+var x = d3.scale.linear() // scale for slider
       .domain([1, 12])
       .range([0, sliderWidth])
       .clamp(true);
 
-// var xSlide = d3.time.scale()
-// 	.domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
-// 	.range([0, sliderWidth])
-// 	.clamp(true);
 
 var brushToMonth = d3.scale.threshold()
 	.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
@@ -177,8 +172,6 @@ var brush = d3.svg.brush()
 	.on("brush", brushed);
 
 var playButton = d3.select("#g-play-button");
-
-
 
 var xTicks = {
   "1": "Jan",
@@ -195,7 +188,7 @@ var xTicks = {
   "12": ""
 };
 
-var xAxis = d3.svg.axis()
+var xAxis = d3.svg.axis() // added this just to get the ticks to show up
     .scale(x)
     .orient("bottom")
     .ticks(12)
@@ -204,10 +197,11 @@ var xAxis = d3.svg.axis()
     .tickSize(10, 0)
     .tickPadding(0);
 
-// x.domain([1, 12]);
-// xAxis.tickValues(d3.range(0, 12));
-var tick = sliderContainer.selectAll(".tick")
-      .each(function() { this.parentNode.appendChild(this); });
+
+// var tick = sliderContainer.selectAll(".tick") 
+//       .each(function() { 
+//       	console.log("tick!")
+//       	this.parentNode.appendChild(this); });
 
 sliderContainer.append("g")
   .attr("class", "x axis")
@@ -251,8 +245,6 @@ queue()
 function render(error, prov, newUs){
 	
 	if (error) {
-	    loading.text("Sorry, there has been an error. " +
-	                 "Please refresh and try again.");
 	    console.log(error);
 	  }
 
@@ -399,9 +391,9 @@ function brushed() {
 		current.month = brushDate;
 		drawMap(brushDate)
 	}
-// 			if (current.month === 12) {
-// 	document.getElementById("g-play-button").textContent = "Play"
-// }
+			if (current.month === 12) { // show 'Play' if slider is on December
+	document.getElementById("g-play-button").textContent = "Play"
+}
 }
 
 function move() {
@@ -409,7 +401,7 @@ function move() {
 	if (moving) return false;
 	moving = true;
 
-	d3.timer(function() {
+	d3.timer(function() { // not sure how this works yet
 		if (copyValue !== current.month) return !(moving = false);
 
 		copyValue = current.month = Math.abs(current.month - targetValue) < 1e-3
