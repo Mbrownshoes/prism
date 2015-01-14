@@ -1,636 +1,258 @@
 <!DOCTYPE html>
-<met charset="utf-8">
-	<link rel="stylesheet" href="main.css"> 
+<html>
+<head>
+  <title>OpenLayers & D3</title>
+  <script src="http://openlayers.org/api/OpenLayers.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="http://tools.pacificclimate.org/dataportal/js/proj4js-compressed.js"></script>
 <style>
-#g-play-button {
-  position: absolute;
-  top: 240px;
-  left: 10px;
-  background: rgb(116,173,209);
-  padding-right: 26px;
-  border-radius: 2px;
-  border: none;
-  color: white;
-  margin: 0;
-  padding: 0 12px;
-  width: 68px;
-  cursor: pointer;
-  height: 30px;
-  font: 13px sans-serif;
+body {
+  margin: 0em 0em;
 }
 
-#g-play-button:hover {
-  background-color: rgb(69,117,180);
-}
-
-#g-play-button:active {
-  background-color: rgb(171,217,233);
-}
-
-
-#land {
-	stroke: #fff;
-}
-
-.leg {
-	font:12px "Helvetica Neue", Helvetica;
-}
-
-.g-summary {
-  line-height: 1.35em;
-  position: absolute;
-  width: 340px;
-  color: #333;
-}
-
- .tick line {
-  stroke: #aaa;
-  shape-rendering: crispEdges;
-}
-
-.g-axis .tick-special {
-  font-weight: bold;
-  fill: black;
-}
-
-/*.xAxis {
-}
-*/
-.axis .domain {
-  fill: none;
-  stroke: #000;
-  stroke-opacity: .3;
-  stroke-width: 10px;
-  stroke-linecap: round;
-
-}
-
-.axis .halo {
-  fill: none;
-  stroke: #ddd;
-  stroke-width: 8px;
-  stroke-linecap: round;
-}
-
-.g-slider .background {
-  cursor: ew-resize !important;
-}
-.g-slider .handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-width: 1.0px;
-  pointer-events: none;
-
-}
-
-#slider {
-	position: absolute;
-	top: 180px;
-	font-size: 0.8em;
-}
 #map {
-    clear: both;
-    position: relative;
-    width: 512px;
-    height: 512px;
-    border: 1px solid black;
+  width: 960px;
+  height: 500px;
 }
 
-#wrapper {
-    width: 512px;
+path {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
 }
 
-
-#options {
-    position: absolute;
-    left: 13px;
-    top: 7px;
-    z-index: 3000;
+path:hover {
+  fill: brown;
+  fill-opacity: .7;
 }
-
 </style>
-
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
-
-</script>
-
-<script src="http://pbrown.ca:8080/geoserver/openlayers/OpenLayers.js" type="text/javascript">
-</script>
+</head>
 
 <body>
- <h1>British Columbia High-Resolution PRISM Climatology</h1>
-<div id="map">
-            <img id="options"/>
-</div>
-<!-- <div id="wrapper">
-    <div id="scale">
-    </div>
-</div> -->
-<div id="toolbar" style="display: none;">
-            <ul>
- 
-                <li>
-                    <a>Antialias:</a>
-                    <select id="antialiasSelector" onchange="setAntialiasMode(value)">
-                        <option value="full">Full</option>
-                        <option value="text">Text only</option>
-                        <option value="none">Disabled</option>
-                    </select>
-                </li>
-                <li>
-                    <a>Format:</a>
-                    <select id="imageFormatSelector" onchange="setImageFormat(value)">
-                        <option value="image/png">PNG 24bit</option>
-                        <option value="image/png8">PNG 8bit</option>
-                        <option value="image/gif">GIF</option>
-                        <option id="jpeg" value="image/jpeg">JPEG</option>
-                    </select>
-                </li>
-        
-     
-                <li>
-                    <a>Filter:</a>
-                    <select id="filterType">
-                        <option value="cql">CQL</option>
-                        <option value="ogc">OGC</option>
-                        <option value="fid">FeatureID</option>
-                    </select>
-                    <input type="text" size="80" id="filter"/>
-                    <img id="updateFilterButton" src="http://pbrown.ca:8080/geoserver/openlayers/img/east-mini.png" onClick="updateFilter()" title="Apply filter"/>
-                    <img id="resetFilterButton" src="http://pbrown.ca:8080/geoserver/openlayers/img/cancel.png" onClick="resetFilter()" title="Reset filter"/>
-                </li>
-            </ul>
-        </div>
- 
-        <div id="nodelist">
-            <em>Click on the map to get feature info</em>
-        </div>
-<div id="slider">
-</div>
-<button id="g-play-button">Pause</button>
-
-<div class = "g-graphic">
-</div>
-
+<div id="map"></div>
+<div id="info"></div>
 <script>
-var map;
-var untiled;
-            var tiled;
-            var pureCoverage = true;
-            // pink tile avoidance
-format = 'image/png';
-                if(pureCoverage) {
-                    document.getElementById('filterType').disabled = true;
-                    document.getElementById('filter').disabled = true;
-                    document.getElementById('antialiasSelector').disabled = true;
-                    document.getElementById('updateFilterButton').disabled = true;
-                    document.getElementById('resetFilterButton').disabled = true;
-                    document.getElementById('jpeg').selected = true;
-                    format = "image/jpeg";
-                }
-            
-                var bounds = new OpenLayers.Bounds(
-                    -2950000, 1000000,
-                    -1000000, 2950000
-                );
-                var options = {
-                    controls: [],
-                    maxExtent: bounds,
-                    maxResolution: 7617.1875,
-                    projection: "EPSG:3153",
-                    units: 'm'
-                };
-                map = new OpenLayers.Map('map', options);
-            
-                // setup tiled layer
-                tiled = new OpenLayers.Layer.WMS(
-                    "cite:reliefWms - Tiled", "http://pbrown.ca:8080/geoserver/cite/wms",
-                    {
-                        LAYERS: 'cite:reliefWms',
-                        STYLES: '',
-                        format: format
-                    },
-                    {
-                        buffer: 0,
-                        displayOutsideMaxExtent: true,
-                        isBaseLayer: true,
-                        yx : {'EPSG:3153' : false}
-                    } 
-                );
-            
-                // setup single tiled layer
-                untiled = new OpenLayers.Layer.WMS(
-                    "cite:reliefWms - Untiled", "http://pbrown.ca:8080/geoserver/cite/wms",
-                    {
-                        LAYERS: 'cite:reliefWms',
-                        STYLES: '',
-                        format: format
-                    },
-                    {
-                       singleTile: true, 
-                       ratio: 1, 
-                       isBaseLayer: true,
-                       yx : {'EPSG:3153' : false}
-                    } 
-                );
-        
-                map.addLayers([untiled, tiled]);
 
-                // build up all controls
-                // map.addControl(new OpenLayers.Control.PanZoomBar({
-                //     position: new OpenLayers.Pixel(2, 15)
-                // }));
-                // map.addControl(new OpenLayers.Control.Navigation());
-                // map.addControl(new OpenLayers.Control.Scale($('scale')));
-                // map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
-                map.zoomToExtent(bounds);
-                
-                // wire up the option button
-                var options = document.getElementById("options");
-                // options.onclick = toggleControlPanel;
-                
-                // support GetFeatureInfo
-                map.events.register('click', map, function (e) {
-                    document.getElementById('nodelist').innerHTML = "Loading... please wait...";
-                    var params = {
-                        REQUEST: "GetFeatureInfo",
-                        EXCEPTIONS: "application/vnd.ogc.se_xml",
-                        BBOX: map.getExtent().toBBOX(),
-                        SERVICE: "WMS",
-                        INFO_FORMAT: 'text/html',
-                        QUERY_LAYERS: map.layers[0].params.LAYERS,
-                        FEATURE_COUNT: 50,
-                        Layers: 'cite:reliefWms',
-                        WIDTH: map.size.w,
-                        HEIGHT: map.size.h,
-                        format: format,
-                        styles: map.layers[0].params.STYLES,
-                        srs: map.layers[0].params.SRS};
-                    
-                    // handle the wms 1.3 vs wms 1.1 madness
-                    if(map.layers[0].params.VERSION == "1.3.0") {
-                        params.version = "1.3.0";
-                        params.j = parseInt(e.xy.x);
-                        params.i = parseInt(e.xy.y);
-                    } else {
-                        params.version = "1.1.1";
-                        params.x = parseInt(e.xy.x);
-                        params.y = parseInt(e.xy.y);
-                    }
-                        
-              
-                    OpenLayers.loadURL("http://pbrown.ca:8080/geoserver/cite/wms", params, this, setHTML, setHTML);
-                    OpenLayers.Event.stop(e);
-                });
-            
-            
-            // sets the HTML provided into the nodelist element
-            function setHTML(response){
-                document.getElementById('nodelist').innerHTML = response.responseText;
-            };
+// Create an OpenLayers map using <div> with id='map' (set width & height with CSS)
+// OpenLayers uses lon/lat coordinates for its default projection, EPSG:4326. 
+// For EPSG:900913, OpenLayers uses x/y coordinates in meters.
+function getBC3005Bounds() {
+    return new OpenLayers.Bounds(-236114, 41654.75, 2204236, 1947346.25);
+}
+
+
+function getProjection(a) {
+    return new OpenLayers.Projection("EPSG:" + a);
+}
+
+function BC3005_map_options() {
+    bounds = getBC3005Bounds();
+    var a = {
+        restrictedExtent: bounds,
+        displayProjection: getProjection(4326),
+        projection: getProjection(3005),
+        units: 'Meter'
+    };
+    return a;
+}
+
+function getBC3005OsmBaseLayer(a, b, c) {
+    return new OpenLayers.Layer.WMS(b, a, {
+        layers: c
+    }, {
+        projection: getProjection(3005),
+        units: 'Meter',
+        maxExtent: new OpenLayers.Bounds(-1000000, -1000000, 3000000, 3000000),
+        maxResolution: 7812.5,
+        numZoomLevels: 12,
+    });
+}
+
+options = BC3005_map_options();
+var tcUrls = new Array();
+      tcUrls.push('http://a.tiles.pacificclimate.org/tilecache/tilecache.py');
+      tcUrls.push('http://b.tiles.pacificclimate.org/tilecache/tilecache.py');
+      tcUrls.push('http://c.tiles.pacificclimate.org/tilecache/tilecache.py');
+var ncwmsUrls = new Array();
+      ncwmsUrls.push('http://tools.pacificclimate.org/ncWMS-PCIC/wms');
+
+var pdp = {
+        VERSION: '0.1',
+        app_root: 'http://tools.pacificclimate.org/dataportal',
+        gs_url: 'http://tools.pacificclimate.org/geoserver/',
+        ncwms_url: ncwmsUrls,
+        tilecache_url: tcUrls,
+        ensemble_name: 'bc_prism'
+      };
+
+var map = new OpenLayers.Map('map', options);
+// var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+//               "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers:'basic'} );
+// map.addLayer(wms);
+
+map.addLayer(getBC3005OsmBaseLayer(pdp.tilecache_url, 'BC OpenStreeMap', 'bc_osm'));
+
+
+
+
+
+
+var getNCWMSLayerCapabilities = function(a) {
+    var b = {
+        REQUEST: "GetCapabilities",
+        SERVICE: "WMS",
+        VERSION: "1.1.1",
+        DATASET: a.params.LAYERS.split("/")[0]
+    };
+    $.ajax({
+        url: a.url,
+        data: b
+    }).fail(handle_ie8_xml).always(function(a, b, c) {
+        window.ncwmsCapabilities = $(c.responseXML);
+    });
+};
+
+defaults = {
+        dataset: "pr_monClim_PRISM_historical_run1_197101-200012",
+        variable: "pr"
+    };
+
+params = {
+        layers: defaults.dataset + "/" + defaults.variable,
+        transparent: 'true',
+        time: '1985-06-30',
+        styles: 'boxfill/occam_inv',
+        logscale: true,
+        numcolorbands: 254,
+        version: '1.1.1',
+        srs: 'EPSG:3005'
+    };
+
+
+
+    datalayerName = "Climate raster";
+    layer = new OpenLayers.Layer.WMS(datalayerName, pdp.ncwms_url, params, {
+        maxExtent: getBC3005Bounds(),
+        buffer: 1,
+        ratio: 1.5,
+        opacity: 0.7,
+        transitionEffect: null,
+        tileSize: new OpenLayers.Size(512, 512)
+    });
+map.addLayer(layer);
+map.setCenter(new OpenLayers.LonLat(-100.9, 55.8).transform("EPSG:4326", "EPSG:3005"), 1);
+
+OpenLayers.Control.ListenToClick = OpenLayers.Class(OpenLayers.Control, {
+  defaultHandlerOptions: {
+    'single': true,
+    'pixelTolerance': 0,
+    'stopSingle': false
+  },
+
+  initialize: function(options) {
+    this.handlerOptions = OpenLayers.Util.extend(
+      {}, this.defaultHandlerOptions
+      );
+    OpenLayers.Control.prototype.initialize.apply(
+      this, arguments
+      ); 
+    this.handler = new OpenLayers.Handler.Click(
+      this, {
+        'click': this.onClick,
+      }, this.handlerOptions
+      );
+  }, 
+
+
+
+  onClick: function (e) {
     
+    var url =  layer.getFullRequestString({
+      REQUEST: "GetFeatureInfo",
+      EXCEPTIONS: "application/vnd.ogc.se_xml",
+      BBOX: layer.map.getExtent().toBBOX(),
+      X: e.xy.x,
+      Y: e.xy.y,
+      INFO_FORMAT: 'text/xml',
+      QUERY_LAYERS: layer.params.LAYERS,
+      WIDTH: layer.map.size.w,
+      FEATURE_COUNT: 10,
+      HEIGHT: layer.map.size.h});
 
-            // Tiling mode, can be 'tiled' or 'untiled'
-            function setTileMode(tilingMode){
-                if (tilingMode == 'tiled') {
-                    untiled.setVisibility(false);
-                    tiled.setVisibility(true);
-                    map.setBaseLayer(tiled);
-                }
-                else {
-                    untiled.setVisibility(true);
-                    tiled.setVisibility(false);
-                    map.setBaseLayer(untiled);
-                }
-            }
+console.log(url)
+    if (url) {
+      document.getElementById('info').innerHTML =
+      '<iframe seamless src="' + url + '" scrolling="no" align="middle"  frameBorder="0" height=150%></iframe>';
+    }
+    // url.activate();
+  },
+
+
+
+});
+var ctmControl = new OpenLayers.Control.ListenToClick({
+  handlerOptions: {
+    'single': true,
+    'pixelTolerance': 0,
+    'stopSingle': false
+  }
+});
+map.addControl(ctmControl);
+ctmControl.activate();
+
+
+// d3.json("us-states.json", function(err, collection) {
+//     var bounds = d3.geo.bounds(collection),
+
+//         path = d3.geo.path().projection(project), // create a d3.geo.path that converts GeoJSON to SVG
+//         vector = new OpenLayers.Layer.Vector( "states" ); // create a vector layer
+
+//     // Use D3 to add the states after the vector layer has been added to the map
+//     vector.afterAdd = function() {
+//         var div = d3.select("#"+vector.div.id);
+//         div.selectAll("svg").remove();  // Prepare OpenLayers vector div to be the container for D3
+
+//         var svg = div.append("svg"),
+//             g = svg.append("g");
+
+//         var states = g.selectAll("path")
+//                 .data(collection.features)
+//               .enter().append("path");
+
+//         reset();
+
+//         // Reposition the SVG to cover the features
+//         function reset() {
+
+//             var bottomLeft = project(bounds[0]),
+//                 topRight = project(bounds[1]);
+
+//             svg .attr("width", topRight[0] - bottomLeft[0])
+//                 .attr("height",bottomLeft[1] - topRight[1])
+//                 .style("margin-left", bottomLeft[0] + "px")
+//                 .style("margin-top", topRight[1] + "px");
+
+//             g   .attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")")
             
-      
-      
-            
-    
-
-// d3.select(".g-graphic")
-// 	.append("h2")
-// 	.html("Monthly average daily maximum temperature values")
-// 	.attr("class","g-summary")
-
-
-// var width = 960,
-// 	height = 600,
-// 	sliderHeight = 30,
-// 	sliderWidth = 260;
-
-// var margin = {top: 10, right: 10, bottom: 10, left: 10}
-
-// var colors = d3.scale.quantize()
-// 	.range(["rgb(69,117,180)", "rgb(116,173,209)", "rgb(171,217,233)", "rgb(224,243,248)", "rgb(255,255,178)", "rgb(254,217,118)", "rgb(254,178,76)", "rgb(253,141,60)", "rgb(252,78,42)", "rgb(227,26,28)", "rgb(177,0,38)"]);
-
-// var legend_labels = ["-20", "-15", "-10", "-5", "0", "5", "10", "15", "20", "25", "30"]
-
-// // var projection = d3.geo.albers()
-// // 	.rotate([96, 0]) 
-// // 	.center([-32, 53.9]) 
-// // 	.parallels([20, 60]) //dont change
-// // 	.scale(1970) 
-// // 	.translate([width / 2, height / 2]);
-
-// var path = d3.geo.path()
-// 	.projection(null);
-
-// var svg = d3.select(".g-graphic")
-// 	.append("svg")
-// 	.attr("width", width)
-// 	.attr("height", height);
-
-// var current = {"month":1},
-// 	maxValue = 12,
-// 	moving;
-
-// var legend = svg.selectAll('g.legendEntry')
-// 	.data(colors.range().reverse())
-// 	.enter()
-// 	.append("g");
-// 	// .attr('class', 'legendEntry');
-
-// var sliderContainer = d3.select("#slider").append("svg")
-//       .attr("width", sliderWidth + margin.left + margin.right + 10)
-//       .attr("height", sliderHeight + margin.top + margin.bottom)
-//     .append("g")
-//       .attr("transform", "translate(" + margin.left + "," + margin.top  + ")");
-
-// var x = d3.scale.linear() // scale for slider
-//       .domain([1, 12])
-//       .range([0, sliderWidth])
-//       .clamp(true);
-
-
-// var brushToMonth = d3.scale.threshold()
-// 	.domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-// 	.range([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-
-// var brush = d3.svg.brush()
-// 	.x(x)
-// 	.extent([current.month, current.month])
-// 	.on("brush", brushed);
-
-// var playButton = d3.select("#g-play-button");
-
-// var xTicks = {
-//   "1": "Jan",
-//   "2": "",
-//   "3": "Mar",
-//   "4": "",
-//   "5": "May",
-//   "6": "",
-//   "7": "Jul",
-//   "8": "",
-//   "9": "Sep",
-//   "10": "",
-//   "11": "Nov",
-//   "12": ""
-// };
-
-// var xAxis = d3.svg.axis() // added this just to get the ticks to show up
-//     .scale(x)
-//     .orient("bottom")
-//     .ticks(12)
-//     .tickFormat(function(d) { 
-//           	return xTicks[d]; })
-//     .tickSize(10, 0)
-//     .tickPadding(0);
-
-
-// // var tick = sliderContainer.selectAll(".tick") 
-// //       .each(function() { 
-// //       	console.log("tick!")
-// //       	this.parentNode.appendChild(this); });
-
-// sliderContainer.append("g")
-//   .attr("class", "x axis")
-//   .attr("transform", "translate(0," + sliderHeight / 2 + ")")
-//   .call(d3.svg.axis()
-//           .scale(x)
-//           .orient("bottom")
-//           .ticks(12)
-//           .tickFormat(function(d) { 
-//           	return xTicks[d]; })
-//           .tickSize(0)
-//           .tickPadding(12))
-//           .select(".domain") // rest stylized the slider to hide ticks
-//           .select(function() { 
-//             return this.parentNode.appendChild(this.cloneNode(true)); 
-//           })
-//           .attr("class", "halo");
-
-// sliderContainer.call(xAxis)
-     
-
-
-// var slider = sliderContainer.append("g")
-//   .attr("class", "g-slider")
-//   .call(brush);
-
-// slider.selectAll(".extent, .resize").remove();
-
-// slider.select(".background").attr("height", sliderHeight);
-
-// var handle = slider.append("circle")
-//   .attr("class", "handle")
-//   .attr("transform", "translate(0," + sliderHeight / 2 + ")")
-//   .attr("r", 9);
-
-// queue()
-// 	.defer(d3.json,"prov.json")
-// 	.defer(d3.json,"newUs.json")
-// 	.await(render);
-
-// function render(error, prov, newUs){
-	
-// 	if (error) {
-// 	    console.log(error);
-// 	  }
-
-// 	BC = prov;
-// 	us = newUs;
-
-// 	drawBackgroundMap();
-	
-// };
-
-
-// drawMap(current.month);
-
-// playButton
-// 	.on("click", paused)
-// 	.each(paused);
-
-// function paused() {
-// 	if (slider.node().__transition__) {
-// 	    slider.interrupt();
-// 	    this.textContent = "Play";
-
-// 	  } else {
-	  	
-// 	  	// Draw the map for the first time
-// 	  	if (current.month === 1 || current.month === maxValue ) {
-// 	  		console.log("starting over")
-// 			slider.call(brush.event)
-// 				.call(brush.extent([1, 1]))
-// 				.call(brush.event);
-// 		}
-		
-// 		this.textContent = "Pause";
-
-// 		console.log(current.month + " month in animate")
-
-// 		slider.transition()
-// 		.duration((maxValue - current.month) / (maxValue - 1) * 10000)
-// 		.ease("linear")
-// 		.call(brush.extent([maxValue, maxValue]))
-// 		.call(brush.event);
-
-// 	};
-// };
-
-
-
-// function drawBackgroundMap(){
-// 	svg.selectAll("path")
-// 		.data(topojson.feature(BC, BC.objects.prov).features)
-// 		.enter()
-// 		.append("path")
-// 		.attr("d", path)
-// 		.style("fill", function(d){
-// 			if (d.properties.province == "British Columbia") {
-// 				return "none"
-// 			} else { 
-// 				return "#ddd";
-// 			}
-// 		})
-// 		.attr("id", "land");
-
-
-
-// 	// add Alaska
-// 	var alaskaState = us.objects.states.geometries.filter(function(d) { return d.id === 2; })[0];
-
-// 	svg.append("path")
-// 	  .datum(topojson.feature(us, alaskaState))
-// 	  .attr("id", "land")
-// 	  .attr("d", path)
-// 	  .style("fill","#ddd");
-// };
-
-// function drawMap(map) {
-	
-// 	svg.selectAll("#clip").remove();
-
-// 	svg.append("clipPath")
-// 		.attr("id", "clip")
-// 		.append("use")
-// 		.attr("xlink:href", "#land");
-
-// 	svg.append("image")
-// 		.attr("clip-path", "url(#clip)")
-// 		.attr("xlink:href", "band" + current.month +".png")
-// 		.attr("width", width)
-// 		.attr("height", height);
-
-// 	svg.append("use")
-// 		.attr("xlink:href", "#land");
-
-// };
-
-
-
-// // legend 
-// var ls_w = 26;
-// legend
-// 	.append("rect")
-// 	.attr("y", 570)
-// 	.attr("x", function(d, i) {
-// 		return (width - 240) - (i * ls_w) - 2*ls_w;
-// 	})
-// 	.attr("width", ls_w)
-// 	.attr("height", 10)
-// 	.style("fill", function(d) {
-// 		return d;
-// 	});
-
-// legend.append("text")
-// 	.attr("y", 595)
-// 	.attr("x", function(d, i) {
-// 		return (width - 240) - (i * ls_w) - ls_w - 10;
-// 	})
-// 	.attr("class", "leg")
-// 	.text(function(d,i) {
-
-// 		if (i === 0)
-// 			return legend_labels[colors.range().length - i-1] + "\xB0 C";
-// 		else
-// 			return legend_labels[colors.range().length - i-1];
-// 	});
-
-
-
-
-// function brushed() {
-// 	var value = brush.extent()[0];
-// 	if (d3.event.sourceEvent) {
-// 		if (d3.event.sourceEvent.target.parentNode === this) {
-// 			playButton.text("Play");
-// 			targetValue = d3.round(x.invert(d3.mouse(this)[0]));
-// 			console.log(targetValue)
-// 			move();
-// 		}
-// 		value = Math.round(x.invert(d3.mouse(this)[0]));
-// 		brush.extent([value, value]);
-// 	}
-// 	handle.attr("cx", x(value));
-// 	var brushDate = brushToMonth(value-1);
-	
-// 	if (brushDate != current.month) {
-// 		current.month = brushDate;
-// 		drawMap(brushDate)
-// 	}
-// 			if (current.month === 12) { // show 'Play' if slider is on December
-// 	document.getElementById("g-play-button").textContent = "Play"
-// }
-// }
-
-// function move() {
-// 	var copyValue = current.month;
-// 	if (moving) return false;
-// 	moving = true;
-
-// 	d3.timer(function() { // not sure how this works yet
-// 		if (copyValue !== current.month) return !(moving = false);
-
-// 		copyValue = current.month = Math.abs(current.month - targetValue) < 1e-3
-// 		? targetValue
-// 		: targetValue * .25 + current.month * (1-.25);
-		
-	
-
-// 	slider.call(brush.event)
-// 				.call(brush.extent([current.month, current.month]))
-// 				.call(brush.event);
-// 	return !(moving = current.month !== targetValue);
+//             states.attr("d", path);
+//         };
+//         map.events.register("moveend", map, reset);
+//     };
+//     // Add the vector layer to the map
+//     map.addLayer(vector);
+
+//    // Use OpenLayers to implement a custom D3 geographic projection.
+//    // Converts lon/lat to viewport coordinates (D3 uses 2-element arrays).
+//    function project(x) {
+//        var point = map.getViewPortPxFromLonLat( new OpenLayers.LonLat(x[0], x[1])
+//                                                     .transform("EPSG:4326", "EPSG:3005")
+//        );
+//        return [ point.x, point.y ];
+//    }
 // });
-
-// }
 
 
 </script>
-
-
-
-
-
-
-
-
-
+</body>
+</html>
