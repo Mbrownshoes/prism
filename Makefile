@@ -69,11 +69,23 @@ band1.png: build/relief.tiff
 
 # set correct projection on 'raw' tif, then add to geoserver
 
+us.json: us-states.json
+	node_modules/.bin/topojson \
+		-o $@ \
+		--properties \
+		--projection='width = 960, height = 600, d3.geo.albers() \
+			.rotate([96, 0]) \
+		    .center([-32, 53.9]) \
+		    .parallels([20, 60]) \
+		    .scale(1970) \
+		    .translate([width / 2, height / 2])' \
+		--simplify=0.5 \
+	    -- us=$<
+
 build/finalWms.tiff: build/testWms.tif
 	gdalwarp \
 	  -r lanczos \
-	  -ts 960 0 \
-	  -t_srs EPSG:4326 \
+	  -t_srs EPSG:3857 \
 	  build/testWms.tif \
 	  build/finalWms.tiff
 
