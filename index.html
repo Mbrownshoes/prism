@@ -12,10 +12,18 @@ svg {
   position: relative;
 }
 
-.border {
-    fill:#ddd;
-    stroke: black;
+path {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
 }
+
+path:hover {
+  fill: brown;
+  fill-opacity: .7;
+}
+
 </style>
 
 <body>
@@ -26,6 +34,9 @@ svg {
 <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
         <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+    <script src="L.TileLayer.BetterWMS.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
 
 
 <script>
@@ -46,11 +57,17 @@ var map = L.map('map').setView([49.1642, -123.9364], 4);
 // }).addTo(map);
 
 
-var nexrad = L.tileLayer.wms("http://tools.pacificclimate.org/ncWMS-PCIC/wms", {
-    layers: 'pr_monClim_PRISM_historical_run1_197101-200012/pr',
-    format: 'image/png',
-    transparent: true});
-nexrad.addTo(map);
+// var nexrad = L.tileLayer.wms("http://tools.pacificclimate.org/ncWMS-PCIC/wms", {
+//     layers: 'pr_monClim_PRISM_historical_run1_197101-200012/pr',
+//     format: 'image/png',
+//     transparent: true});
+// nexrad.addTo(map);
+
+L.tileLayer.betterWms("http://tools.pacificclimate.org/ncWMS-PCIC/wms", {
+        layers: 'pr_monClim_PRISM_historical_run1_197101-200012/pr',
+        transparent: true,
+        format: 'image/png'
+      }).addTo(map);
 
 var svg = d3.select(map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
